@@ -1,10 +1,6 @@
 <div class="container">
   <div class="content">
     <div class="display">
-      <div class="logo">
-        <img src="../assets/ngx-editor.svg" />
-        <div class="subtitle">Rich Text Editor for angular using ProseMirror</div>
-      </div>
       <div class="badges" *ngIf="isProdMode">
         <img src="https://badgen.net/npm/v/ngx-editor" />
         <img src="https://badgen.net/npm/dm/ngx-editor" />
@@ -13,17 +9,16 @@
       </div>
     </div>
 
-    <form [formGroup]="form">
+    
 
       <div class="editor NgxEditor__Wrapper">
         <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [customMenuRef]="customMenu">
         </ngx-editor-menu>
-        <ngx-editor [editor]="editor" formControlName="editorContent">
+        <ngx-editor [editor]="editor" [ngModel]="html" (ngModelChange)="valuechange($event)">
           <ngx-editor-floating-menu [editor]="editor"></ngx-editor-floating-menu>
         </ngx-editor>
       </div>
-
-    </form>
+      <button (click) = "addLatex()">ADD LATEX TO EDITOR</button>
 
     <!-- <div class="editor">
       <ngx-editor [editor]="editor" [(ngModel)]="editordoc">

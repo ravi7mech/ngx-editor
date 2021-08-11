@@ -1,14 +1,17 @@
 import { MarkType, NodeType, Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
-import { toggleMark, baseKeymap, chainCommands, exitCode } from 'prosemirror-commands';
+import { toggleMark, baseKeymap, chainCommands, exitCode, deleteSelection, joinBackward, selectNodeBackward } from 'prosemirror-commands';
 import { splitListItem, liftListItem, sinkListItem } from 'prosemirror-schema-list';
 import { history, undo, redo } from 'prosemirror-history';
 import {
   inputRules, wrappingInputRule, textblockTypeInputRule,
   smartQuotes, emDash, ellipsis, InputRule
 } from 'prosemirror-inputrules';
-
+import {
+  mathPlugin, mathBackspaceCmd, insertMathCmd, mathSerializer,makeBlockMathInputRule, makeInlineMathInputRule,
+	REGEX_INLINE_MATH_DOLLARS, REGEX_BLOCK_MATH_DOLLARS
+} from "@benrbray/prosemirror-math";
 import { markInputRule } from 'ngx-editor/helpers';
 
 interface Options {
@@ -30,6 +33,15 @@ const isMacOs = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform
 // at the start of a textblock into a blockquote.
 const blockQuoteRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^\s*>\s$/, nodeType);
+};
+
+// Prose mirror math Input Rules
+const inlineMathInputRule  = (nodeType: NodeType): InputRule => {
+  return makeInlineMathInputRule(REGEX_INLINE_MATH_DOLLARS, nodeType)
+};
+
+const blockMathInputRule  = (nodeType: NodeType): InputRule => {
+  return makeBlockMathInputRule(REGEX_BLOCK_MATH_DOLLARS, nodeType)
 };
 
 // : (NodeType) → InputRule
@@ -97,6 +109,8 @@ const buildInputRules = (schema: Schema): Plugin => {
   rules.push(bulletListRule(schema.nodes.bullet_list));
   rules.push(codeBlockRule(schema.nodes.code_block));
   rules.push(headingRule(schema.nodes.heading, 6));
+  rules.push(inlineMathInputRule(schema.nodes.math_inline));
+  rules.push(blockMathInputRule(schema.nodes.math_display));
 
   return inputRules({ rules });
 };
@@ -130,12 +144,21 @@ const getKeyboardShortcuts = (schema: Schema, options: ShortcutOptions) => {
       'Mod-]': sinkListItem(schema.nodes.list_item),
       Tab: sinkListItem(schema.nodes.list_item)
     }),
-    keymap(baseKeymap)
+    keymap(baseKeymap),
+    mathPlugin,
+    keymap({
+        "Mod-Space" : insertMathCmd(schema.nodes.math_inline),
+        "Backspace": chainCommands(deleteSelection, mathBackspaceCmd, joinBackward, selectNodeBackward),
+    })
   ];
 
   if (options.history) {
     plugins.push(keymap(historyKeyMap));
   }
+
+  console.log("prose mirror-math!!");
+
+  
 
   return plugins;
 };

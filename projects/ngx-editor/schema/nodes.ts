@@ -1,7 +1,7 @@
 import { DOMOutputSpec, Node as ProseMirrorNode, NodeSpec } from 'prosemirror-model';
 import * as sl from 'prosemirror-schema-list';
-
 import { toStyleString } from 'ngx-editor/utils';
+// import { defaultBlockMathParseRules, defaultInlineMathParseRules } from '../input-rules/math-paste-rules';
 
 const doc: NodeSpec = {
   content: 'block+'
@@ -231,6 +231,34 @@ export const image: NodeSpec = {
   }
 };
 
+
+const mathInline: NodeSpec = {
+  group: "inline math",
+  content: "text*",        // important!
+  inline: true,            // important!
+  atom: true,              // important!
+  toDOM: () => ["math-inline", { class: "math-node" }, 0],
+  parseDOM: [{
+    tag: "math-inline"   // important!
+  },// ...defaultInlineMathParseRules
+]
+};
+
+const mathDisplay: NodeSpec = {
+  group: "block math",
+  content: "text*",        // important!
+  atom: true,              // important!
+  code: true,              // important!
+  toDOM: () => ["math-display", { class: "math-node" }, 0],
+  parseDOM: [{
+    tag: "math-display"  // important!
+  }, //...defaultBlockMathParseRules
+]
+
+};
+
+
+
 const listItem = {
   ...sl.listItem,
   content: 'paragraph block*'
@@ -260,7 +288,9 @@ const nodes = {
   image,
   list_item: listItem,
   ordered_list: orderedList,
-  bullet_list: bulletList
+  bullet_list: bulletList,
+  math_inline: mathInline,
+  math_display: mathDisplay
 };
 
 export default nodes;

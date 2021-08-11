@@ -4,7 +4,7 @@ import {
   chainCommands, createParagraphNear, liftEmptyBlock,
   newlineInCode, splitBlock
 } from 'prosemirror-commands';
-import { DOMParser } from 'prosemirror-model';
+import { DOMParser, NodeType } from 'prosemirror-model';
 
 import MarkCommand from './commands/Mark';
 import ListCommand from './commands/ListItem';
@@ -13,6 +13,7 @@ import HeadingCommand, { HeadingLevels } from './commands/Heading';
 import ImageCommand, { ImageAttrs } from './commands/Image';
 import TextColorCommand from './commands/TextColor';
 import TextAlignCommand, { Align } from './commands/TextAlign';
+import { insertMathCmd } from 'ngx-editor/commands';
 
 const execMark = (name: string, toggle = false) => {
   return (state: EditorState, dispatch: (tr: Transaction) => void) => {
@@ -171,6 +172,11 @@ class EditorCommands {
   insertLink(text: string, attrs: LinkAttrs): this {
     const command = new LinkCommand();
     command.insert(text, attrs)(this.state, this.dispatch);
+    return this;
+  }
+
+  insertMathInline(nodeType:NodeType): this {
+    insertMathCmd(nodeType)(this.state, this.dispatch);
     return this;
   }
 

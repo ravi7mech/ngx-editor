@@ -9,6 +9,7 @@ import EditorCommands from './EditorCommands';
 import defautlSchema from './schema';
 import { parseContent } from './parsers';
 import getDefaultPlugins from './defaultPlugins';
+import { mathSerializer } from '@benrbray/prosemirror-math';
 
 type JSONDoc = Record<string, any>;
 type Content = string | null | JSONDoc;
@@ -98,7 +99,8 @@ class Editor {
         plugins: [...defaultPlugins, ...plugins, ],
       }),
       nodeViews,
-      dispatchTransaction: this.handleTransactions.bind(this)
+      dispatchTransaction: this.handleTransactions.bind(this),
+      clipboardTextSerializer: (slice) => { return mathSerializer.serializeSlice(slice) }
     });
   }
 

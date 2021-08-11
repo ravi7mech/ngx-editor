@@ -144,6 +144,12 @@ const textBackgroundColor: MarkSpec = {
   },
 };
 
+
+const mathSelect: MarkSpec = {
+  toDOM() { return ["math-select", 0] },
+			parseDOM: [{ tag: "math-select" }]
+};
+
 const marks = {
   link,
   em,
@@ -152,7 +158,8 @@ const marks = {
   u,
   s,
   text_color: textColor,
-  text_background_color: textBackgroundColor
+  text_background_color: textBackgroundColor,
+  math_select:mathSelect
 };
 
 export default marks;

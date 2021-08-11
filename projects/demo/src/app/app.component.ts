@@ -8,6 +8,7 @@ import jsonDoc from './doc';
 import schema from './schema';
 import plugins from './plugins';
 import nodeViews from './nodeviews';
+import { NodeType } from 'prosemirror-model';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,8 @@ import nodeViews from './nodeviews';
 export class AppComponent implements OnInit, OnDestroy {
   isProdMode = environment.production;
 
-  editordoc = jsonDoc;
-
+  html = "";
+  inHtml = "";
   editor: Editor;
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -33,13 +34,13 @@ export class AppComponent implements OnInit, OnDestroy {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
 
-  form = new FormGroup({
+  /* form = new FormGroup({
     editorContent: new FormControl({ value: jsonDoc, disabled: false }, Validators.required(schema))
   });
-
-  get doc(): AbstractControl {
+ */
+  /* get doc(): AbstractControl {
     return this.form.get('editorContent');
-  }
+  } */
 
   ngOnInit(): void {
     this.editor = new Editor({
@@ -50,6 +51,18 @@ export class AppComponent implements OnInit, OnDestroy {
       keyboardShortcuts: true,
       inputRules: true
     });
+  }
+
+  valuechange(newValue) {
+    console.log(newValue)
+  }
+
+  addLatex() {
+    const nodeType: NodeType = schema.nodes.math_inline;
+    nodeType.create(null, [schema.text("\sqrt{3}")]);
+    this.editor.commands
+      .insertMathInline(nodeType)
+      .exec();
   }
 
   ngOnDestroy(): void {
