@@ -1,7 +1,6 @@
 import { DOMOutputSpec, Node as ProseMirrorNode, NodeSpec } from 'prosemirror-model';
 import * as sl from 'prosemirror-schema-list';
 import { toStyleString } from 'ngx-editor/utils';
-// import { defaultBlockMathParseRules, defaultInlineMathParseRules } from '../input-rules/math-paste-rules';
 
 const doc: NodeSpec = {
   content: 'block+'
@@ -240,8 +239,7 @@ const mathInline: NodeSpec = {
   toDOM: () => ["math-inline", { class: "math-node" }, 0],
   parseDOM: [{
     tag: "math-inline"   // important!
-  },// ...defaultInlineMathParseRules
-]
+  }]
 };
 
 const mathDisplay: NodeSpec = {
@@ -252,8 +250,7 @@ const mathDisplay: NodeSpec = {
   toDOM: () => ["math-display", { class: "math-node" }, 0],
   parseDOM: [{
     tag: "math-display"  // important!
-  }, //...defaultBlockMathParseRules
-]
+  }]
 
 };
 
@@ -291,6 +288,8 @@ const nodes = {
   bullet_list: bulletList,
   math_inline: mathInline,
   math_display: mathDisplay
+  
+
 };
 
 export default nodes;

@@ -1,8 +1,9 @@
 import { EditorState, Plugin, Selection, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { keymap } from 'prosemirror-keymap';
-
 import { Command } from 'prosemirror-commands';
+import { getMentionsPlugin } from './mentions';
+import pluginConfig from './mentions/customMentionConfig';
 
 type Dir = 'left' | 'right' | 'up' | 'down';
 

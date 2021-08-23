@@ -1,5 +1,6 @@
 import { nodes as basicNodes, marks } from 'ngx-editor';
 import { Schema, NodeSpec, DOMOutputSpec } from 'prosemirror-model';
+import { mentionNode, tagNode } from './plugins/mentions';
 
 const codeMirror: NodeSpec = {
   content: 'text*',
@@ -21,7 +22,10 @@ const codeMirror: NodeSpec = {
 
 const nodes = {
   ...basicNodes,
-  code_mirror: codeMirror
+  code_mirror: codeMirror,
+  mention:mentionNode,
+  tag:tagNode,
+
 };
 
 const schema = new Schema({

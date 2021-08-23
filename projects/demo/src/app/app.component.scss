@@ -53,6 +53,73 @@
   }
 }
 
-
 @import "~@benrbray/prosemirror-math/style/math.css";
 @import "~katex/dist/katex.min.css";
+
+/* prosemirror mentions -css*/
+/* .prosemirror-mention-node {
+  color: blue !important;
+  text-decoration: underline !important;
+}
+
+.prosemirror-tag-node {
+  color: gray !important;
+  font-style: italic;
+}
+
+
+.suggestion-item {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+*/
+/* prosemirror mentions -css ends*/
+
+.suggestion-item-active {
+  background: #08c;
+  color: #fff;
+}
+.prosemirror-mention-node {
+  color: #08c;
+}
+
+.prosemirror-tag-node {
+  color: #08c;
+}
+
+.prosemirror-suggestion {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid #999;
+}
+
+.suggestion-item-list {
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+
+}
+
+.suggestion-item {
+  padding: 5px;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.suggestion-item:before {
+  border-top: 1px solid;
+}
+
+.avatar-mention{
+  display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    background-color: rgba(0, 0, 0, .3);
+    color: #FFF;
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
+}

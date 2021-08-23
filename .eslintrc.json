@@ -9,6 +9,7 @@
         "*.ts"
       ],
       "parserOptions": {
+        "sourceType": "module",
         "project": [
           "tsconfig.json"
         ],

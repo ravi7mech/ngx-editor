@@ -130,8 +130,8 @@ class Editor {
 
   registerPlugin(plugin: Plugin): void {
     const { state } = this.view;
-    const plugins = [...state.plugins, plugin];
-
+    const plugins = [...state.plugins];
+    plugins.unshift(plugin);
     const newState = state.reconfigure({ plugins });
     this.view.updateState(newState);
   }

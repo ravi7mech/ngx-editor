@@ -178,6 +178,7 @@ const getDefaultPlugins = (schema: Schema, options: Options): Plugin[] => {
     plugins.push(buildInputRules(schema));
   }
 
+
   return plugins;
 };
 

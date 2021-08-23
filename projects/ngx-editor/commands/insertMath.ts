@@ -12,14 +12,16 @@ import { EditorState, NodeSelection, Transaction } from "prosemirror-state";
  * @param mathNodeType An instance for either your math_inline or math_display
  *     NodeType.  Must belong to the same schema that your EditorState uses!
  */
-export const insertMathCmd = (mathNodeType: NodeType): Command => {
-	return function(state:EditorState, dispatch:((tr:Transaction)=>void)|undefined){
-		let { $from } = state.selection, index = $from.index();
+export const insertMathCmd = (mathNodeType: NodeType, initialText = null): Command => {
+	return function (state: EditorState, dispatch: ((tr: Transaction) => void) | undefined) {
+		let { $from, $to } = state.selection, index = $from.index();
 		if (!$from.parent.canReplaceWith(index, index, mathNodeType)) {
 			return false;
 		}
-		if (dispatch){
-			let tr = state.tr.replaceSelectionWith(mathNodeType.create({}));
+		if (dispatch) {
+			// schema.text does not allow empty strings
+			let mathNode = initialText ? mathNodeType.create({}, [state.schema.text(initialText)]) : mathNodeType.create({})
+			let tr = state.tr.replaceSelectionWith(mathNode);
 			tr = tr.setSelection(NodeSelection.create(tr.doc, $from.pos));
 			dispatch(tr);
 		}

@@ -13,7 +13,7 @@ import HeadingCommand, { HeadingLevels } from './commands/Heading';
 import ImageCommand, { ImageAttrs } from './commands/Image';
 import TextColorCommand from './commands/TextColor';
 import TextAlignCommand, { Align } from './commands/TextAlign';
-import { insertMathCmd } from 'ngx-editor/commands';
+import { insertMathCmd, moveToEnd } from 'ngx-editor/commands';
 
 const execMark = (name: string, toggle = false) => {
   return (state: EditorState, dispatch: (tr: Transaction) => void) => {
@@ -84,6 +84,7 @@ class EditorCommands {
     this.applyTrx();
     return this;
   }
+
 
   insertNewLine(): this {
     const newLineCommands = [newlineInCode, createParagraphNear, liftEmptyBlock, splitBlock];
@@ -175,8 +176,17 @@ class EditorCommands {
     return this;
   }
 
-  insertMathInline(nodeType:NodeType): this {
-    insertMathCmd(nodeType)(this.state, this.dispatch);
+  insertMathInline(latexExpression:string): this {
+    insertMathCmd(this.state.schema.nodes.math_inline, latexExpression)(this.state, this.dispatch);
+    return this;
+  }
+  insertMathDisplay(latexExpression:string): this {
+    insertMathCmd(this.state.schema.nodes.math_display, latexExpression)(this.state, this.dispatch);
+    return this;
+  }
+
+  moveToEnd():this {
+    moveToEnd()(this.state,this.dispatch,this.view);
     return this;
   }
 

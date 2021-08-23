@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { environment } from '../environments/environment';
-
 import { Validators, Editor, Toolbar } from 'ngx-editor';
-
 import jsonDoc from './doc';
 import schema from './schema';
 import plugins from './plugins';
 import nodeViews from './nodeviews';
-import { NodeType } from 'prosemirror-model';
+import CustomMentionConfig from './plugins/mentions/customMentionConfig';
+import { getMentionsPlugin } from './plugins/mentions';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +50,8 @@ export class AppComponent implements OnInit, OnDestroy {
       keyboardShortcuts: true,
       inputRules: true
     });
+
+    this.addLatex()
   }
 
   valuechange(newValue) {
@@ -58,11 +59,69 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   addLatex() {
-    const nodeType: NodeType = schema.nodes.math_inline;
-    nodeType.create(null, [schema.text("\sqrt{3}")]);
-    this.editor.commands
-      .insertMathInline(nodeType)
-      .exec();
+    let users = [
+      {
+        name: 'John Doe',
+        id: '101',
+        email: 'joe@gmail.com',
+        image:'https://i.pravatar.cc/50'
+      },
+      {
+        name: 'Joe Lewis',
+        id: '102',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'John Doe',
+        id: '101',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'Joe Lewis',
+        id: '102',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      }, {
+        name: 'John Doe',
+        id: '101',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'Joe Lewis',
+        id: '102',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'John Doe',
+        id: '101',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'Joe Lewis',
+        id: '102',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'John Doe',
+        id: '101',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      },
+      {
+        name: 'Joe Lewis',
+        id: '102',
+        image:'https://i.pravatar.cc/50',
+        email: 'joe@gmail.com',
+      }
+    ];
+    this.editor.registerPlugin(getMentionsPlugin(new CustomMentionConfig(users).pluginConfig))
+    // this.editor.commands.insertMathInline("\\sqrt{3}").moveToEnd().exec();
   }
 
   ngOnDestroy(): void {
