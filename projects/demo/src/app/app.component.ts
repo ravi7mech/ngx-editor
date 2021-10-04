@@ -121,7 +121,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     ];
     this.editor.registerPlugin(getMentionsPlugin(new CustomMentionConfig(users).pluginConfig))
-    // this.editor.commands.insertMathInline("\\sqrt{3}").moveToEnd().exec();
+     this.editor.commands.insertMathInline("\\sqrt{3}").moveToEnd().exec();
   }
 
   ngOnDestroy(): void {
